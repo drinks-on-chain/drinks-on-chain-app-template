@@ -100,7 +100,13 @@ async function parseError(res: Response, path: string): Promise<ApiError> {
   const parsed = errorEnvelope.safeParse(json);
   if (parsed.success) {
     const { error, statusCode, path: p } = parsed.data;
-    return new ApiError({ status: statusCode, code: error.code, message: error.message, details: error.details, path: p });
+    return new ApiError({
+      status: statusCode,
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      path: p,
+    });
   }
   return new ApiError({ status: res.status, code: `HTTP_${res.status}`, message: res.statusText || "Error", path });
 }
