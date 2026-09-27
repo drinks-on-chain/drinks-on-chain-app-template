@@ -71,8 +71,9 @@ Cambiar de mocks a backend real: `NEXT_PUBLIC_MOCKS=0` y `API_ORIGIN` al servido
 
 1. `gh repo create drinks-on-chain/drinks-on-chain-<sistema> --public --template drinks-on-chain/drinks-on-chain-app-template --clone`.
 2. En `package.json`: `name` y el puerto de `dev`, `dev:mocks` y `start` (ERP 3002; ver el `CLAUDE.md` de la carpeta paraguas).
-3. Metadatos en `src/app/layout.tsx`, tema (`data-theme="cava"` en el POS) y navegación en `src/components/app-frame.tsx` (o el shell que toque: `AdminShell`, `StoreShell`, `KioskShell`).
-4. Crear la rama `dev`, conectar el repo en Vercel (producción desde `main`, previews desde `dev`) con `NEXT_PUBLIC_MOCKS=1` mientras no haya backend.
+3. `CLIENT_APP` en `src/lib/client-app.ts` (`ERP`, `BACKOFFICE`, `MARKETPLACE` o `POS`): el cliente de API la envía en la cabecera `X-Client-App` de todas las peticiones y el backend la guarda en la bitácora (contrato de la Ola 1 §7).
+4. Metadatos en `src/app/layout.tsx`, tema (`data-theme="cava"` en el POS) y navegación en `src/components/app-frame.tsx` (o el shell que toque: `AdminShell`, `StoreShell`, `KioskShell`).
+5. Crear la rama `dev`, conectar el repo en Vercel (producción desde `main`, previews desde `dev`) con `NEXT_PUBLIC_MOCKS=1` mientras no haya backend.
 
 ## Convenciones
 

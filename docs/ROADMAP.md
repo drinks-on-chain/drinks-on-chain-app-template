@@ -27,3 +27,7 @@ Contrato: `plan/contratos/o0-sesiones-y-estandares.md` del plan maestro.
 - [x] `fetchAllPages()` para colecciones completas con `limit` ≤ 100 · 2026-09-27
 - [x] Pruebas unitarias del cliente y E2E de humo (login, cambio de organización con `sofia`, recarga, cierre de sesión, error por campo) · 2026-09-27
 - [ ] Probar contra el backend de desarrollo cuando publique O0-BE-4 (cookie `doc_rt`, `switch-organization`)
+
+## Ola 1 · Back office y bodegas (O1-ERP-1)
+
+- [x] Cabecera `X-Client-App` en todas las peticiones del cliente de API (`CLIENT_APP` en `src/lib/client-app.ts`; la plantilla se identifica como `API`) · 2026-09-27
