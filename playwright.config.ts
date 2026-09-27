@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 3100;
+const PORT = Number(process.env.E2E_PORT ?? 3100);
 // En local se usa el Chrome instalado; en CI, el Chromium que instala Playwright.
 const channel = process.env.CI ? undefined : "chrome";
 
@@ -11,6 +11,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
+  // MSW arranca en el navegador y la sesión se recupera al cargar: margen para máquinas cargadas.
+  expect: { timeout: 10_000 },
   use: {
     baseURL: `http://localhost:${PORT}`,
     locale: "es-BO",
@@ -25,6 +27,6 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,
-    env: { NEXT_PUBLIC_MOCKS: "1", NEXT_PUBLIC_API_URL: "" },
+    env: { NEXT_PUBLIC_MOCKS: "1" },
   },
 });
