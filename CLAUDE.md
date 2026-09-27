@@ -8,7 +8,7 @@ Plantilla de las aplicaciones de Drinks on Chain. Lee también el `CLAUDE.md` de
 - Antes de un PR: `pnpm lint && pnpm typecheck && pnpm test && pnpm build` y `pnpm e2e`.
 - Las pantallas nunca llaman a `fetch` ni conocen URLs: usan hooks sobre `src/lib/api` y los esquemas de `@drinks-on-chain/mocks`.
 - Toda pantalla tiene estados cargando (skeleton), vacío (EmptyState con acción) y error (ErrorState con reintento).
-- Sesión (contrato de la Ola 0): acceso solo en memoria, renovación con la cookie `doc_rt`; nunca guardar tokens en `sessionStorage`/`localStorage`. La API se llama en `/api/v1/*` del propio origen (reescritura a `API_ORIGIN`).
+- Sesión (contrato de la Ola 0): acceso solo en memoria, renovación con la cookie `doc_rt`; nunca guardar tokens en `sessionStorage`/`localStorage`. La API se llama en `/api/v1/*` del propio origen (`src/proxy.ts` la reescribe a `API_ORIGIN` con la IP del cliente firmada con `PROXY_SHARED_SECRET`).
 - Listas con `limit` ≤ 100; colecciones completas con `fetchAllPages()`. Errores de formulario con `fieldErrorsFrom()`.
 - Cifras y fechas con `src/lib/format.ts` (único `parseDecimal`, es-BO).
 - Textos en `src/lib/i18n/es.ts`; solo español.
