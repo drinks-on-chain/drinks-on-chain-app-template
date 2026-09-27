@@ -32,3 +32,4 @@ Contrato: `plan/contratos/o0-sesiones-y-estandares.md` del plan maestro.
 
 - [x] Cabecera `X-Client-App` en todas las peticiones del cliente de API (`CLIENT_APP` en `src/lib/client-app.ts`; la plantilla se identifica como `API`) · 2026-09-27
 - [x] `switch-organization` con el refresco de la misma sesión (cookie y, hasta H1, `refreshToken` en el cuerpo) y espera de `Retry-After` en los 429 (`ApiError.retryAfter`, `errorMessage`), como el backend O0-BE-4 · 2026-09-27
+- [x] IP real del cliente detrás del proxy (O1-OPS-1): `rewrites` sustituidos por `src/proxy.ts`, que reescribe `/api/v1/*` a `${API_ORIGIN}/v1/*` con `X-DOC-Client-IP` firmada (HMAC con `PROXY_SHARED_SECRET`, variable de servidor) · 2026-09-27
