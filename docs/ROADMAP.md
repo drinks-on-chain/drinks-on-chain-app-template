@@ -33,3 +33,13 @@ Contrato: `plan/contratos/o0-sesiones-y-estandares.md` del plan maestro.
 - [x] Cabecera `X-Client-App` en todas las peticiones del cliente de API (`CLIENT_APP` en `src/lib/client-app.ts`; la plantilla se identifica como `API`) · 2026-09-27
 - [x] `switch-organization` con el refresco de la misma sesión (cookie y, hasta H1, `refreshToken` en el cuerpo) y espera de `Retry-After` en los 429 (`ApiError.retryAfter`, `errorMessage`), como el backend O0-BE-4 · 2026-09-27
 - [x] IP real del cliente detrás del proxy (O1-OPS-1): `rewrites` sustituidos por `src/proxy.ts`, que reescribe `/api/v1/*` a `${API_ORIGIN}/v1/*` con `X-DOC-Client-IP` firmada (HMAC con `PROXY_SHARED_SECRET`, variable de servidor) · 2026-09-27
+
+## Cierre de la Ola 1 (H1) · retirada de la compatibilidad transitoria
+
+Contrato: `plan/contratos/o1-backoffice-y-bodegas.md` §11 y `o0-sesiones-y-estandares.md` §5.
+
+- [x] `@drinks-on-chain/mocks` 0.4.0-rc.1 (`PATCH /users/me` con la forma de `me`, `refreshToken` opcional) · 2026-09-27
+- [x] Sin `refreshToken` en el cuerpo: ni se guarda ni se reenvía en `refresh` ni en `switch-organization`; el de la respuesta se ignora · 2026-09-27
+- [x] Esquemas de sesión y `me` sin `tokens.refreshToken` ni `user.userRole/wineryId/memberRole` (`src/lib/auth/schemas.ts`); `refresh` solo con la forma del login · 2026-09-27
+- [x] `PATCH /v1/users/me` solo con `{ user, memberships, activeOrganizationId }`; `details` solo como `{ field, message }` · 2026-09-27
+- [x] Aviso "Tu sesión se cerró por seguridad" en el login también al recargar con una sesión revocada (E2E) · 2026-09-27
