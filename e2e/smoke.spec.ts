@@ -82,6 +82,27 @@ test("cambio de organización con varias membresías (sofia)", async ({ page }) 
   expect(errors).toEqual([]);
 });
 
+test("una sesión revocada avisa en el login, también al recargar", async ({ page }) => {
+  await login(page, "enologa@cintiviejo.test");
+  // Revoca en los mocks las sesiones abiertas (como un bloqueo desde el Backoffice).
+  await page.evaluate(() => {
+    const key = "doc-mocks:sessions";
+    const state = JSON.parse(localStorage.getItem(key) ?? "{}") as { sessions?: Record<string, { revoked: boolean }> };
+    for (const session of Object.values(state.sessions ?? {})) session.revoked = true;
+    localStorage.setItem(key, JSON.stringify(state));
+  });
+  const notice = page.getByText("Tu sesión se cerró por seguridad. Vuelve a entrar.");
+  await page.reload();
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(notice).toBeVisible();
+  // En el propio login, otra recarga sigue avisando (la cookie es de la sesión revocada).
+  await page.reload();
+  await expect(notice).toBeVisible();
+  // Entrar de nuevo lo quita.
+  await login(page, "enologa@cintiviejo.test");
+  await expect(notice).toHaveCount(0);
+});
+
 test("un 422 marca el campo exacto con details[].field", async ({ page }) => {
   await login(page, "enologa@cintiviejo.test");
   const name = page.getByLabel("Nombre completo");
