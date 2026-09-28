@@ -44,3 +44,4 @@ Contrato: `plan/contratos/o1-backoffice-y-bodegas.md` §11 y `o0-sesiones-y-esta
 - [x] `PATCH /v1/users/me` solo con `{ user, memberships, activeOrganizationId }`; `details` solo como `{ field, message }` · 2026-09-27
 - [x] Aviso "Tu sesión se cerró por seguridad" en el login también al recargar con una sesión revocada (E2E) · 2026-09-27
 - [x] `@drinks-on-chain/mocks` 0.4.0-rc.2 (retirada de H1): esquemas de sesión y `me` reexportados de los mocks salvo `tokens.refreshToken` (obsoleto hasta 0.5), panel `/__mocks` con `DemoUser.role` y pruebas sin campos de 0.1 · 2026-09-27
+- [x] `@drinks-on-chain/ui` 0.3.1-rc.1: el menú de usuario del shell navega con `linkComponent` (`Link` de `next/link`) sin recargar · 2026-09-27
