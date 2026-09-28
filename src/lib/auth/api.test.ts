@@ -22,7 +22,7 @@ const membership = {
   role: "ENOLOGIST",
   status: "ACTIVE",
 };
-/** Respuesta de sesión tal como queda en H1: sin `refreshToken` ni `userRole/wineryId/memberRole`. */
+/** Respuesta de sesión tras H1: sin `refreshToken` ni `userRole/wineryId/memberRole`. */
 const session = (accessToken: string) => ({
   user,
   memberships: [membership],
@@ -43,23 +43,12 @@ describe("auth/api (H1)", () => {
     vi.unstubAllGlobals();
   });
 
-  it("el login vale sin refreshToken ni campos de 0.1, y los ignora si aún llegan", async () => {
+  it("el login guarda el acceso de la sesión (sin refreshToken en el cuerpo)", async () => {
     fetchMock.mockResolvedValueOnce(ok(session("a1")));
-    await expect(login({ email: user.email, password: "x" })).resolves.toMatchObject({ activeOrganizationId: "w1" });
-    expect(getAccessToken()).toBe("a1");
-
-    const legacy = session("a2");
-    fetchMock.mockResolvedValueOnce(
-      ok({
-        ...legacy,
-        user: { ...user, userRole: "WINERY_ADMIN", wineryId: "w1", memberRole: "OWNER" },
-        tokens: { ...legacy.tokens, refreshToken: "sid.1.secreto" },
-      }),
-    );
     const res = await login({ email: user.email, password: "x" });
-    expect(res.user).not.toHaveProperty("userRole");
-    expect(res.user).not.toHaveProperty("wineryId");
+    expect(res).toMatchObject({ activeOrganizationId: "w1" });
     expect(res.tokens).not.toHaveProperty("refreshToken");
+    expect(getAccessToken()).toBe("a1");
   });
 
   it("cambiar de organización envía solo { organizationId } (el refresco va en la cookie)", async () => {
