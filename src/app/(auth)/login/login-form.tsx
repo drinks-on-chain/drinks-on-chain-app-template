@@ -5,13 +5,15 @@ import { useRouter } from "next/navigation";
 import { Alert, Button, Field, Input } from "@drinks-on-chain/ui";
 import { ApiError, errorMessage } from "@/lib/api/errors";
 import { fieldErrorsFrom } from "@/lib/api/field-errors";
-import { useIsAuthenticated, useLogin } from "@/lib/auth/hooks";
+import { useIsAuthenticated, useLogin, useSessionEndReason } from "@/lib/auth/hooks";
 import { es } from "@/lib/i18n/es";
 
 export function LoginForm() {
   const router = useRouter();
   const loginMutation = useLogin();
   const authenticated = useIsAuthenticated();
+  // Sesión cerrada sin querer (revocada o caducada), también al recargar: se avisa hasta que se intente entrar.
+  const endReason = useSessionEndReason();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -37,6 +39,9 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4" noValidate>
+      {endReason && loginMutation.isIdle && (
+        <Alert tone="warning">{endReason === "revoked" ? es.auth.revoked : es.auth.expired}</Alert>
+      )}
       {message && <Alert tone="danger">{message}</Alert>}
       <Field label={es.auth.email} required error={fieldErrors.email}>
         <Input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
